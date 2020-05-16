@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from BucketList.views import change,complete,add,delete,sortbydead,sortbymem,unsort,addMember,addLeader,signasleader
+from BucketList.views import change,complete,add,delete,sortbydead,sortbymem,unsort,addMember,addLeader,signasleader,ChartData
 from BucketList import views
 from django.conf.urls import url,include
 
@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^special/',views.special,name='special'),
     url(r'^BucketList/',include('BucketList.urls')),
     url(r'^logout/$', views.user_logout, name='logout'),
+    url(r'^chart/getdata/$',ChartData.as_view(), name='get-chart-data'),
     url(r'^signasleader/$', views.signasleader, name='signasleader'),
 
 ]

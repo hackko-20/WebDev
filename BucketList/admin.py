@@ -1,16 +1,12 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from BucketList.models import User,ListItem,Profile,Leader,Event
-import calendar
-from calendar import HTMLCalendar
-import datetime
-from django.urls import reverse
-from django.utils.safestring import mark_safe
+from BucketList.models import User,ListItem,Profile,Leader,GraphMem,No_task
+
 
 # Register your models here.
 
-class EventAdmin(admin.ModelAdmin):
+'''class EventAdmin(admin.ModelAdmin):
 	list_display = ['day', 'end_time', 'notes']
 	change_list_template = 'BucketList/change_list.html'
 
@@ -38,13 +34,14 @@ class EventAdmin(admin.ModelAdmin):
 
 		extra_context['previous_month'] = reverse('admin:BucketList_event_changelist') + '?day__gte=' + str(previous_month)
 		extra_context['next_month'] = reverse('admin:BucketList_event_changelist') + '?day__gte=' + str(next_month)
-		cal= HTMLCalendar()
+		cal = HTMLCalendar()
 		html_calendar = cal.formatmonth(d.year, d.month, withyear=True)
 		html_calendar = html_calendar.replace('<td', '<td width="150" height="150" ')
 		extra_context['calendar'] = mark_safe(html_calendar)
-		return super(EventAdmin, self).changelist_view(request, extra_context)
+		return super(EventAdmin, self).changelist_view(request, extra_context)'''
 
-admin.site.register(Event,EventAdmin)
+admin.site.register(GraphMem)
+admin.site.register(No_task)
 admin.site.register(Profile)
 admin.site.register(ListItem)
 admin.site.register(Leader)

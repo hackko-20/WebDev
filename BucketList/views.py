@@ -1,68 +1,58 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import ListItem,Profile,Leader
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from .models import ListItem,Profile,Leader,GraphMem,No_task
 from .forms import Userform
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import operator
 from django.contrib import messages
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.db.models import F
 
 
-'''from datetime import timedelta
-import datetime
-import pytz
+class ChartData(APIView):
+	authentication_classes = []
+	permission_classes = []
 
-import httplib2
-from googleapiclient.discovery import build
-from oauth2client.service_account import ServiceAccountCredentials
+	def get(self, request, format=None):
+		itemall = No_task.objects.all()
+		members = GraphMem.objects.all()
+		item_count = members.count()
+		data=[]
+		labels=[]
+		member_list=[]
+		for j in members:
+			member_list.append(j.name)
+		for i in range(item_count):
+			temp=[member_list[i],'JAN','FEB','MAR','APR','MAY','JUNE','JULY','AUG','SEPT','OCT','NOV','DEC',' ']
+			labels = labels + temp
 
-service_account_email = 'bucketlistadmin@bucketlist-2001.iam.gserviceaccount.com'
+		for item in itemall:
+			data.append(0)
+			data.append(item.task_jan)
+			data.append(item.task_feb)
+			data.append(item.task_mar)
+			data.append(item.task_apr)
+			data.append(item.task_may)
+			data.append(item.task_june)
+			data.append(item.task_july)
+			data.append(item.task_aug)
+			data.append(item.task_sept)
+			data.append(item.task_oct)
+			data.append(item.task_nov)
+			data.append(item.task_dec)
+			data.append(0)
+		datagone = {
+			"labels":labels,
+			"y_axis":data,
+		}
+		return Response(datagone)
 
-CLIENT_SECRET_FILE = 'bucketlist-2001-58a3dfd48f62.json'
-
-SCOPES = 'https://www.googleapis.com/auth/calendar'
-scopes = [SCOPES]
-
-def build_service():
-	credentials = ServiceAccountCredentials.from_json_keyfile_name(filename='bucketlist-2001-58a3dfd48f62.json',scopes=SCOPES)
-	http = credentials.authorize(httplib2.Http())
-	service = build('calendar', 'v3', http=http)
-	return service'''
-
-'''def create_event():
-   service = build_service()
-    start_datetime = datetime.datetime.now(tz=pytz.utc)
-	event = service.events().insert(calendarId='shreyayadav987@gmail.com', body={'summary': 'Foo','description': 'Bar','start': {'dateTime': start_datetime.isoformat()},'end': {'dateTime': (start_datetime + timedelta(minutes=15)).isoformat()} ,}).execute()
-	print(event)
-def save(self, force_insert=False, force_update=False):
-    new_task = False
-    if not self.id:
-        new_task = True
-    super(Task, self).save(force_insert, force_update)
-    end = self.startDateTime + timedelta(minutes=24*60)
-    title = "This is test Task"
-    if new_task:
-        event = Event(start=self.startDateTime, end=end,title=title,
-                  description=self.description)
-        event.save()
-        rel = EventRelation.objects.create_relation(event, self)
-        rel.save()
-        try:
-            cal = Calendar.objects.get(pk=1)
-        except Calendar.DoesNotExist:
-            cal = Calendar(name="Community Calendar")
-            cal.save()
-        cal.events.add(event)
-    else:
-        event = Event.objects.get_for_object(self)[0]
-        event.start = self.startDateTime
-        event.end = end
-        event.title = title
-        event.description = self.description
-        event.save()'''
 def Calendar(request):
-	return render(request,'BucketList/change_list.html',{})
+	members=GraphMem.objects.all()
+	return render(request,'BucketList/change_list.html',{'members':members})
 
 def home(request, leadsignedin={}):
 	context={
@@ -80,20 +70,66 @@ def home(request, leadsignedin={}):
 
 def add(request):
 	new_item= ListItem(content=request.POST['content'],member=request.POST['member'],deadline=request.POST['deadline'],team=request.user)
+	memb= GraphMem.objects.get(memid__id=request.user.id,name=request.POST['member'])
 	all_member= Profile.objects.filter(memberid__id=request.user.id)
 	flag=0;
 	for member in all_member:
 		if(new_item.member == member.mem):
 			new_item.save()
-			return HttpResponseRedirect('/')
 			flag=1;
 	if(flag==0):
 		messages.info(request,"Work could not be added as it was assigned to a non-existent member")
 		return HttpResponseRedirect('/')
+	month = request.POST['month']
+	temp = No_task.objects.filter(taskid=memb)
+	if(not temp):
+		graphmem = No_task(taskid=memb)
+		graphmem.save()
+	if(month == "JAN"):
+		No_task.objects.filter(taskid=memb).update(task_jan=F('task_jan')+1)
+		
+	if(month == "FEB"):
+		No_task.objects.filter(taskid=memb).update(task_feb=F('task_feb')+1)
+		
+	if(month == "MAR"):
+		No_task.objects.filter(taskid=memb).update(task_mar=F('task_mar')+1)
+		
+	if(month == "APR"):
+		No_task.objects.filter(taskid=memb).update(task_apr=F('task_apr')+1)
+		
+	if(month == "MAY"):
+		No_task.objects.filter(taskid=memb).update(task_may=F('task_may')+1)
+		
+	if(month == "JUNE"):
+		No_task.objects.filter(taskid=memb).update(task_june=F('task_june')+1)
+		
+	if(month == "JULY"):
+		No_task.objects.filter(taskid=memb).update(task_july=F('task_july')+1)
+		
+	if(month == "AUG"):
+		No_task.objects.filter(taskid=memb).update(task_aug=F('task_aug')+1)
+		
+	if(month == "SEPT"):
+		No_task.objects.filter(taskid=memb).update(task_sept=F('task_sept')+1)
+		
+	if(month == "OCT"):
+		No_task.objects.filter(taskid=memb).update(task_oct=F('task_oct')+1)
+		
+	if(month == "NOV"):
+		No_task.objects.filter(taskid=memb).update(task_nov=F('task_nov')+1)
+		
+	if(month == "DEC"):
+		No_task.objects.filter(taskid=memb).update(task_dec=F('task_dec')+1)
+		
+	return HttpResponseRedirect('/')
+	
+
 
 def addMember(request):
 	new_mem= Profile(mem=request.POST['memname'],memberid=request.user)
 	new_mem.save()
+	new_graphmem = GraphMem(memid=request.user,name=request.POST['memname'])
+	new_graphmem.save()
 	return HttpResponseRedirect('/')
 
 def addLeader(request):
@@ -112,7 +148,10 @@ def addLeader(request):
 
 def delete(request,item_id):
 	item_d= ListItem.objects.get(id=item_id)
+	memobj = GraphMem.objects.get(memid__id=request.user.id,name=item_d.member)
+	memobj.delete()
 	item_d.delete()
+
 	return HttpResponseRedirect('/')
 
 def complete(request,item_id):

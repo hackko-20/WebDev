@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BucketList',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

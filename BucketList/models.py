@@ -10,8 +10,7 @@ class ListItem(models.Model):
 	content = models.CharField(max_length=500,blank=True,null=True,default=None)
 	deadline = models.DateField()
 	member = models.CharField(max_length=100,blank=True,null=True)
-	status=models.TextField(max_length=20,default="Incomplete")
-
+	status = models.TextField(max_length=20,default="Incomplete")
 
 class Profile(models.Model):
     memberid=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
@@ -22,15 +21,24 @@ class Leader(models.Model):
 	Group_leader=models.TextField(max_length=30, blank=True, null=True)
 	leader_pin=models.TextField(max_length=4,blank=True, null=True)
 
-class Event(models.Model):
-	day = models.DateField(u'Day of the event', help_text=u'Day of the event')
-	end_time = models.TimeField(u'deadline', help_text=u'deadline')
-	notes = models.TextField(u'Textual Notes', help_text=u'Textual Notes')
+class GraphMem(models.Model):
+	memid=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+	name = models.CharField(max_length=100,blank=True,null=True)
 
-	class Meta:
-		verbose_name = u'Scheduling'
-		verbose_name_plural = u'Scheduling'
+class No_task(models.Model):
+	taskid = models.ForeignKey(GraphMem,on_delete=models.CASCADE,blank=True,null=True)
+	task_jan = models.IntegerField(default=0)
+	task_feb = models.IntegerField(default=0)
+	task_mar = models.IntegerField(default=0)
+	task_apr = models.IntegerField(default=0)
+	task_june = models.IntegerField(default=0)
+	task_july = models.IntegerField(default=0)
+	task_aug = models.IntegerField(default=0)
+	task_sept = models.IntegerField(default=0)
+	task_oct = models.IntegerField(default=0)
+	task_may = models.IntegerField(default=0)
+	task_nov = models.IntegerField(default=0)
+	task_dec = models.IntegerField(default=0)
 
-	def get_absolute_url(self):
-		url = reverse('admin:%s_%s_change' % (self._meta.app_label, self._meta.model_name), args=[self.id])
-		return u'<a href="%s">%s</a>' % (url, str(self.start_time))
+
+
