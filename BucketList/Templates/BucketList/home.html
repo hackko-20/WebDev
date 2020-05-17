@@ -9,8 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
- 
-
 
 {% if messages %}
 <ul class="messages">
@@ -46,6 +44,24 @@
     return false;
   }
 }
+</script
+<script>
+  function ValidateFormAnnouncesForm() {
+  var x = document.forms["announce"]["announces"].value;
+  if (x == "") {
+    alert("Announcement field must be filled out");
+    return false;
+  }
+}
+</script>
+  <script>
+  function ValidateFormNotesForm() {
+  var x = document.forms["note"]["notes"].value;
+  if (x == "") {
+    alert("Notes field must be filled out");
+    return false;
+  }
+}
 </script>
 <script>
   function ValidateFormLeaderForm() {
@@ -71,7 +87,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'BucketList:Calendar' %}">Calendar</a>
       </li>&nbsp;&nbsp;
-      
+
 
       {% if user.is_authenticated %}
       <li class="nav-item">
@@ -100,6 +116,54 @@
 </div>&nbsp;&nbsp;
 
       <li class="nav-item">
+        <button type="button" class="nav-link bg-dark" style="padding: none;border: none" onclick="document.getElementById('ADDNOTE')" data-toggle="modal" data-target="#examplemodall">
+  Add Notes
+</button></li>
+<div class="modal fade" id="examplemodall" tabindex="-1" role="dialog" aria-labelledby="exampleModallLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        </center><h5 class="modal-title" id="exampleModallLabel">ADD NOTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <center><form name="note" action="/addNotes/" onsubmit="return ValidateFormNotesForm()" method="post">{% csrf_token %}
+        <h6 style="font-size: 30px">TYPE NOTE:</h6><br><input type="text" name="notes"><br><br>
+        </div>
+      <div class="modal-footer">
+        <input class="btn btn-primary" type="submit" value="ADD NOTE" >
+        </form></center>
+        </div>
+    </div>
+  </div>
+</div>&nbsp;&nbsp;
+       <li class="nav-item">
+        <button type="button" class="nav-link bg-dark" style="padding: none;border: none" onclick="document.getElementById('ADDANNOUNCE')" data-toggle="modal" data-target="#examplemodalll">
+  Add Announcement
+</button></li>
+<div class="modal fade" id="examplemodalll" tabindex="-1" role="dialog" aria-labelledby="exampleModalllLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        </center><h5 class="modal-title" id="exampleModalllLabel">ADD ANNOUNCEMENT</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <center><form name="announce" action="/addAnnounces/" onsubmit="return ValidateFormAnnouncesForm()" method="post">{% csrf_token %}
+        <h6 style="font-size: 30px">ANNOUNCEMENT:</h6><br><input type="text" name="announces"><br><br>
+        </div>
+      <div class="modal-footer">
+        <input class="btn btn-primary" type="submit" value="ADD ANNOUNCEMENT" >
+        </form></center>
+        </div>
+    </div>
+  </div>
+</div>&nbsp;&nbsp;
+      <li class="nav-item">
         <a class="nav-link " href="{% url 'logout' %}">Logout</a>
       </li>&nbsp;&nbsp;{% if not leadsignedin %}
       <li class="nav-item">
@@ -121,7 +185,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <ul class="list-group">
             {% for item in notifs %}
-            <li class="dropdown-item"> <b>Task</b>:  {{ item.content }} <br>  <b>Member</b>:   {{ item.member }}
+            <li class="dropdown-item"> <b>Task</b>:  {{ item.content }} <br>  <b>Member</b>:   {{ item.member }} <br> <b>Notes</b>:  {{item.notes}}
               &nbsp;&nbsp;
                 {% if item.status == "Completed :)" %}<span class="badge badge-success" style="text-align: left">Completed</span>{% else %}<span class="badge badge-danger" style="text-align: left">Incomplete</span>{% endif %}
               &nbsp; &nbsp;
@@ -198,6 +262,38 @@
   </div>
 </div>
 <!--members dropdown ends-->
+  <!--notes dropdown-->
+<div class="dropdown" style="float: left" >
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    NOTES
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% if all_notes %}
+    {% for notes in all_notes %}
+    <a class="dropdown-item" href="#" >{{ notes.note }}</a>
+    {% endfor %}
+    {% else %}
+    <a class="dropdown-item" href="#">No notes :(</a>
+    {% endif %}
+  </div>
+</div>
+<!--notes dropdown ends-->
+    <!--announces dropdown-->
+<div class="dropdown" style="float: left" >
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    ANNOUNCEMENTS
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% if all_announces %}
+    {% for announces in all_announces %}
+    <a class="dropdown-item" href="#" >{{ announces.announce }}</a>
+    {% endfor %}
+    {% else %}
+    <a class="dropdown-item" href="#">No announcements :(</a>
+    {% endif %}
+  </div>
+</div>
+<!--announces dropdown ends-->
 <br>
 <br>
 <br>
@@ -232,23 +328,22 @@
   <p class="display-4" style="margin-top: 10px; color: DimGrey;font-weight: 500">No Task Pending! WOHOO!</p>
   {% endif %}
   </ul>
-  <!--LISTING ENDS--> 
+  <!--LISTING ENDS-->
 <br>
 <br>
 {% if leadsignedin %}
 <div>
     <div style="float: left; margin-bottom: 2rem;" >
-      <div class="card" style="width: 15rem; height: 34rem;" style="float: left">
+      <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
   <div class="card-body">
     <h5 class="card-title">Add Work</h5>
         <p class="card-text">Add work to your project, assign it to a member!</p>
         <form name="addItem" action="/add/" onsubmit="return ValidateForm()" method="post">{% csrf_token %}
           <h6>TASK TO BE ADDED:</h6> <input  type="text" name="content" ><br><br>
           <h6>DEADLINE:</h6>  <input id= "deadline" type="date" name="deadline" ><br><br>
-          <h6>MONTH:</h6>  <input type="text" name="month"><br><br>
           <h6>MEMBER:</h6> <input type="text" name="member" ><br><br>
           <input class="btn btn-primary" type="submit" value="ADD">
-        </form> 
+        </form>
   </div>
 </div>
 </div>
@@ -302,10 +397,10 @@
 </div>
 </div>
 </div>
+
+{% endif %}
+
+      {% endif %}
 </div>
-{% endif %}
-
-{% endif %}
-
 </body>
 </html>
