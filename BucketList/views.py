@@ -188,29 +188,29 @@ def complete(request,item_id):
 	item.status="Completed :)"
 	item.save()
 	if(item.month == "JAN"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_jan=F('task_jan')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_jan=F('task_jan')+1)
 	if(item.month == "FEB"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_feb=F('task_feb')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_feb=F('task_feb')+1)
 	if(item.month == "MAR"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_mar=F('task_mar')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_mar=F('task_mar')+1)
 	if(item.month == "APR"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_apr=F('task_apr')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_apr=F('task_apr')+1)
 	if(item.month == "MAY"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_may=F('task_may')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_may=F('task_may')+1)
 	if(item.month == "JUNE"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_june=F('task_june')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_june=F('task_june')+1)
 	if(item.month == "JULY"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_july=F('task_july')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_july=F('task_july')+1)
 	if(item.month == "AUG"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_aug=F('task_aug')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_aug=F('task_aug')+1)
 	if(item.month == "SEPT"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_sept=F('task_sept')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_sept=F('task_sept')+1)
 	if(item.month == "OCT"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_oct=F('task_oct')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_oct=F('task_oct')+1)
 	if(item.month == "NOV"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_nov=F('task_nov')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_nov=F('task_nov')+1)
 	if(item.month == "DEC"):
-		GraphMem.objects.filter(memid__id=request.user.id).update(task_dec=F('task_dec')+1)
+		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_dec=F('task_dec')+1)
 
 	return HttpResponseRedirect('/')
 
