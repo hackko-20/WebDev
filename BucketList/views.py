@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .models import ListItem,Profile,Leader,GraphMem,No_task
+from .models import ListItem,Profile,Leader,GraphMem,No_task,Notes,Announcements
 from .forms import Userform
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -21,9 +21,25 @@ class ChartData(APIView):
 		itemall = No_task.objects.all()
 		members = GraphMem.objects.all()
 		item_count = members.count()
+		data2=[]
 		data=[]
 		labels=[]
 		member_list=[]
+		for it in members:
+			data2.append(0)
+			data2.append(it.task_jan)
+			data2.append(it.task_feb)
+			data2.append(it.task_mar)
+			data2.append(it.task_apr)
+			data2.append(it.task_may)
+			data2.append(it.task_june)
+			data2.append(it.task_july)
+			data2.append(it.task_aug)
+			data2.append(it.task_sept)
+			data2.append(it.task_oct)
+			data2.append(it.task_nov)
+			data2.append(it.task_dec)
+			data2.append(0)
 		for j in members:
 			member_list.append(j.name)
 		for i in range(item_count):
@@ -47,9 +63,20 @@ class ChartData(APIView):
 			data.append(0)
 		datagone = {
 			"labels":labels,
-			"y_axis":data,
+			"y_axis1":data,
+			"y_axis2":data2,
 		}
 		return Response(datagone)
+
+def addNotes(request):
+	new_note = Notes(notesid=request.user,content=request.POST['notes'])
+	new_note.save()
+	return HttpResponseRedirect('/')
+
+def addAnnounce(request):
+	new_announce = Announcements(announceid=request.user,content=request.POST['announces'])
+	new_announce.save()
+	return HttpResponseRedirect('/')
 
 def Calendar(request):
 	members=GraphMem.objects.all()
@@ -60,17 +87,19 @@ def home(request, leadsignedin={}):
 	'leadsignedin':False
 	}
 	if request.user.is_authenticated:
+		notes = Notes.objects.filter(notesid=request.user.id)
+		announce = Announcements.objects.filter(announceid=request.user.id)
 		all_member= Profile.objects.filter(memberid__id=request.user.id)
 		all_items = ListItem.objects.filter(team__id=request.user.id)
 		allitems = all_items.filter(status="Incomplete")
 		TeamLeader= Leader.objects.filter(leaderid__id=request.user.id)
 		context.update(leadsignedin)
-		return render(request,'BucketList/home.html',{'all':allitems,'all_members':all_member,'teamleader':TeamLeader,'leadsignedin':leadsignedin,'notifs':all_items})
+		return render(request,'BucketList/home.html',{'all':allitems,'all_members':all_member,'teamleader':TeamLeader,'leadsignedin':leadsignedin,'notifs':all_items, 'notes':notes, 'announce':announce})
 	else:
 		return render(request,'BucketList/home.html',{})
 
 def add(request):
-	new_item= ListItem(content=request.POST['content'],member=request.POST['member'],deadline=request.POST['deadline'],team=request.user)
+	new_item= ListItem(content=request.POST['content'],member=request.POST['member'],deadline=request.POST['deadline'],team=request.user,month=request.POST['month'])
 	memb= GraphMem.objects.get(memid__id=request.user.id,name=request.POST['member'])
 	all_member= Profile.objects.filter(memberid__id=request.user.id)
 	flag=0;
@@ -158,6 +187,31 @@ def complete(request,item_id):
 	item= ListItem.objects.get(id=item_id)
 	item.status="Completed :)"
 	item.save()
+	if(item.month == "JAN"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_jan=F('task_jan')+1)
+	if(item.month == "FEB"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_feb=F('task_feb')+1)
+	if(item.month == "MAR"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_mar=F('task_mar')+1)
+	if(item.month == "APR"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_apr=F('task_apr')+1)
+	if(item.month == "MAY"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_may=F('task_may')+1)
+	if(item.month == "JUNE"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_june=F('task_june')+1)
+	if(item.month == "JULY"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_july=F('task_july')+1)
+	if(item.month == "AUG"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_aug=F('task_aug')+1)
+	if(item.month == "SEPT"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_sept=F('task_sept')+1)
+	if(item.month == "OCT"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_oct=F('task_oct')+1)
+	if(item.month == "NOV"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_nov=F('task_nov')+1)
+	if(item.month == "DEC"):
+		GraphMem.objects.filter(memid__id=request.user.id).update(task_dec=F('task_dec')+1)
+
 	return HttpResponseRedirect('/')
 
 def change(request,item_id):
