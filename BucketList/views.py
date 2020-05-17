@@ -10,6 +10,7 @@ from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import F
+import random
 
 
 class ChartData(APIView):
@@ -133,13 +134,13 @@ def addMember(request):
 	return HttpResponseRedirect('/')
 
 def addLeader(request):
-	leader=Leader(Group_leader=request.POST['Leader'],leaderid=request.user,leader_pin="abcd")
+	leader=Leader(Group_leader=request.POST['Leader'],leader_pin="abcd",leaderid=request.user)
 	all_member= Profile.objects.filter(memberid__id=request.user.id)
 	flag=0;
 	for member in all_member:
 		if(leader.Group_leader == member.mem):
 			leader.save()
-			messages.info(request,"Your pin is abcd.")
+			messages.info(request,"Your pin is abcd")
 			return HttpResponseRedirect('/')
 			flag=1;
 	if(flag==0):
@@ -151,13 +152,12 @@ def delete(request,item_id):
 	memobj = GraphMem.objects.get(memid__id=request.user.id,name=item_d.member)
 	memobj.delete()
 	item_d.delete()
-
 	return HttpResponseRedirect('/')
 
 def complete(request,item_id):
-	item_d= ListItem.objects.get(id=item_id)
-	item_d.status="Completed :)"
-	item_d.save()
+	item= ListItem.objects.get(id=item_id)
+	item.status="Completed :)"
+	item.save()
 	return HttpResponseRedirect('/')
 
 def change(request,item_id):

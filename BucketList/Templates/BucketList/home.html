@@ -20,6 +20,28 @@
 </ul>
 {% endif %}
 
+<script>
+
+  setInterval(displayclock,500)
+  function displayclock(){
+    var time = new Date();
+    var datetoday = time.getDate();
+    var hrs = time.getHours();
+    var min = time.getMinutes();
+    var sec = time.getSeconds();
+
+    if (hrs > 12) {
+      hrs=hrs-12;
+    }
+  
+    if (hrs == 0){
+      hrs = 12;
+    }
+  
+    document.getElementById('clock').innerHTML=  hrs +':'+ min +':'+ sec;
+  }
+  </script>
+
   <script>
   function ValidateForm() {
   var date=document.forms["addItem"]["deadline"].value;
@@ -159,7 +181,7 @@
 </div>
 {% endif %}
 
-<body style=" background:black; box-sizing: border-box ;background-attachment: fixed; background-repeat: no-repeat; background-size: cover;" style="background-position: center;">
+<body style=" background:burlywood; box-sizing: border-box ;background-attachment: fixed; background-repeat: no-repeat; background-size: cover;" style="background-position: center;">
 <div style="margin-left: 10rem; margin-right: 10rem; margin-top: 7rem;">
 {% if user.is_authenticated %}
 
@@ -217,7 +239,7 @@
     </form></div><br>
     {% if not leadsignedin %}
     <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-    <div style="float: left"><form action="/complete/{{ item.id }}/" method="post" style="display:inline">{% csrf_token %}<input class="btn btn-success btn-secondary btn-sm" type="submit" value="COMPLETED TASK">
+    <div style="float: left"><form action="/complete/{{ item.id }}/" method="post" style="display:inline">{% csrf_token %}<input class="btn btn-success btn-secondary btn-sm" type="submit" value="COMPLETED TASK"><div id="clock" style="float: left"></div>
   </form></div>{% endif %}
 
   {% if leadsignedin %}
