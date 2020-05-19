@@ -102,7 +102,6 @@
 <!--validation part ends-->
 </head>
 
-
 <!--navigation bar start-->
 <section><nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
   <a class="navbar-brand" href="/">BucketList</a>
@@ -295,7 +294,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {% if all_members %}
     {% for member in all_members %}
-    <a class="dropdown-item" href="#" >{{ member.mem }}</a>
+    <a class="dropdown-item" href="#">{{ member.mem }}</a>
     {% endfor %}
     {% else %}
     <a class="dropdown-item" href="#">No members :(</a>
@@ -315,7 +314,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {% if notes %}
     {% for note in notes %}
-    <a class="dropdown-item" href="#" >{{ note.content }}</a>
+    <a class="dropdown-item" href="#memsignin" >{{ note.content }}</a>
     {% endfor %}
     {% else %}
     <a class="dropdown-item" href="#">No notes :(</a>
@@ -332,6 +331,7 @@
 <br>
 <!--LISTING STARTS-->
   <ul class="list-group">
+  
   {% if all %}
   {% for item in all %}
   <li class="list-group-item list-group-item-action list-group-item-secondary" >
@@ -343,8 +343,7 @@
   <div style="float: left"><h5>Deadline:</h5> {{ item.deadline }} <form action="/delete/{{ item.id }}/" method="post" style="display:inline">
       {% csrf_token %} &nbsp;&nbsp;
     <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
-    </form></div><br>
-    {% if not leadsignedin %}
+    </form></div><br>{% if not leadsignedin %}
     <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <div style="float: left"><form action="/complete/{{ item.id }}/" method="post" style="display:inline">{% csrf_token %}<input class="btn btn-success btn-secondary btn-sm" type="submit" value="COMPLETED TASK">
   </form></div>{% endif %}
@@ -416,8 +415,8 @@
 <br>
 {% endif %}
 {% if not leadsignedin and teamleader %}
-<div class="row">
-    <div style="float: left;margin-left: 1rem; margin-bottom: 2rem;">
+
+    <div style="float: left; margin-bottom: 2rem;">
       <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
   <div class="card">
     <div class="card-body">
@@ -430,11 +429,34 @@
   </div>
 </div>
 </div>
+<div style="float: left;margin-left: 1rem; margin-bottom: 2rem;">
+  <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
+<div class="card-body">
+  <h5 class="card-title">Create your personal page!</h5>
+    <form id="membersignup" name="memsignup" action="/membersignup/" onsubmit="return ValidateSignIn()" method="post">{% csrf_token %}
+    <h6>NAME:</h6><input type="text" name="memname"><br><br>
+    <h6>USERNAME:</h6><input type="text" name="memusername"><br><br>
+    <h6>PASSWORD:</h6><input type="password" name="mempassword"><br><br>
+    <input class="btn btn-primary" type="submit" value="CREATE" >
+    </form> </div>
+</div>
+</div>
+<div style="float: left;margin-left: 1rem; margin-bottom: 2rem;">
+  <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
+<div class="card-body">
+  <h5 class="card-title">Go to my page!</h5>
+    <form id="memberlogin" name="memlogin" action="/memberlogin/" onsubmit="return ValidateSignIn()" method="post">{% csrf_token %}
+    <h6>NAME:</h6><input type="email" name="name"><br><br>
+    <h6>PASSWORD:</h6><input type="password" name="memberpin"><br><br>
+    <input class="btn btn-primary" type="submit" value="SIGN IN" >
+    </form> </div>
+</div>
 </div>
 
 {% endif %}
-
-      {% endif %}
+{% endif %}
 </div>
+
+
 </body>
 </html>

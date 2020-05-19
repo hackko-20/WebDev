@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from .models import ListItem,Profile,Leader,GraphMem,No_task,Notes,Announcements
+from .models import ListItem,Profile,Leader,Notes,Announcements
 from .forms import Userform
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -18,48 +18,41 @@ class ChartData(APIView):
 	permission_classes = []
 
 	def get(self, request, format=None):
-		itemall = No_task.objects.all()
-		members = GraphMem.objects.all()
-		item_count = members.count()
+		item_all = Profile.objects.all()
 		data2=[]
 		data=[]
 		labels=[]
 		member_list=[]
-		for it in members:
+		for it in item_all:
 			data2.append(0)
-			data2.append(it.task_jan)
-			data2.append(it.task_feb)
-			data2.append(it.task_mar)
-			data2.append(it.task_apr)
-			data2.append(it.task_may)
-			data2.append(it.task_june)
-			data2.append(it.task_july)
-			data2.append(it.task_aug)
-			data2.append(it.task_sept)
-			data2.append(it.task_oct)
-			data2.append(it.task_nov)
-			data2.append(it.task_dec)
+			data2.append(it.ctask_jan)
+			data2.append(it.ctask_feb)
+			data2.append(it.ctask_mar)
+			data2.append(it.ctask_apr)
+			data2.append(it.ctask_may)
+			data2.append(it.ctask_june)
+			data2.append(it.ctask_july)
+			data2.append(it.ctask_aug)
+			data2.append(it.ctask_sept)
+			data2.append(it.ctask_oct)
+			data2.append(it.ctask_nov)
+			data2.append(it.ctask_dec)
 			data2.append(0)
-		for j in members:
-			member_list.append(j.name)
-		for i in range(item_count):
-			temp=[member_list[i],'JAN','FEB','MAR','APR','MAY','JUNE','JULY','AUG','SEPT','OCT','NOV','DEC',' ']
+			temp=[it.mem,'JAN','FEB','MAR','APR','MAY','JUNE','JULY','AUG','SEPT','OCT','NOV','DEC',' ']
 			labels = labels + temp
-
-		for item in itemall:
 			data.append(0)
-			data.append(item.task_jan)
-			data.append(item.task_feb)
-			data.append(item.task_mar)
-			data.append(item.task_apr)
-			data.append(item.task_may)
-			data.append(item.task_june)
-			data.append(item.task_july)
-			data.append(item.task_aug)
-			data.append(item.task_sept)
-			data.append(item.task_oct)
-			data.append(item.task_nov)
-			data.append(item.task_dec)
+			data.append(it.task_jan)
+			data.append(it.task_feb)
+			data.append(it.task_mar)
+			data.append(it.task_apr)
+			data.append(it.task_may)
+			data.append(it.task_june)
+			data.append(it.task_july)
+			data.append(it.task_aug)
+			data.append(it.task_sept)
+			data.append(it.task_oct)
+			data.append(it.task_nov)
+			data.append(it.task_dec)
 			data.append(0)
 		datagone = {
 			"labels":labels,
@@ -79,8 +72,7 @@ def addAnnounce(request):
 	return HttpResponseRedirect('/')
 
 def Calendar(request):
-	members=GraphMem.objects.all()
-	return render(request,'BucketList/change_list.html',{'members':members})
+	return render(request,'BucketList/change_list.html',{})
 
 def home(request, leadsignedin={}):
 	context={
@@ -100,7 +92,6 @@ def home(request, leadsignedin={}):
 
 def add(request):
 	new_item= ListItem(content=request.POST['content'],member=request.POST['member'],deadline=request.POST['deadline'],team=request.user,month=request.POST['month'])
-	memb= GraphMem.objects.get(memid__id=request.user.id,name=request.POST['member'])
 	all_member= Profile.objects.filter(memberid__id=request.user.id)
 	flag=0;
 	for member in all_member:
@@ -111,50 +102,45 @@ def add(request):
 		messages.info(request,"Work could not be added as it was assigned to a non-existent member")
 		return HttpResponseRedirect('/')
 	month = request.POST['month']
-	temp = No_task.objects.filter(taskid=memb)
-	if(not temp):
-		graphmem = No_task(taskid=memb)
-		graphmem.save()
 	if(month == "JAN"):
-		No_task.objects.filter(taskid=memb).update(task_jan=F('task_jan')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_jan=F('task_jan')+1)
 		
 	if(month == "FEB"):
-		No_task.objects.filter(taskid=memb).update(task_feb=F('task_feb')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_feb=F('task_feb')+1)
 		
 	if(month == "MAR"):
-		No_task.objects.filter(taskid=memb).update(task_mar=F('task_mar')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_mar=F('task_mar')+1)
 		
 	if(month == "APR"):
-		No_task.objects.filter(taskid=memb).update(task_apr=F('task_apr')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_apr=F('task_apr')+1)
 		
 	if(month == "MAY"):
-		No_task.objects.filter(taskid=memb).update(task_may=F('task_may')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_may=F('task_may')+1)
 		
 	if(month == "JUNE"):
-		No_task.objects.filter(taskid=memb).update(task_june=F('task_june')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_june=F('task_june')+1)
 		
 	if(month == "JULY"):
-		No_task.objects.filter(taskid=memb).update(task_july=F('task_july')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_july=F('task_july')+1)
 		
 	if(month == "AUG"):
-		No_task.objects.filter(taskid=memb).update(task_aug=F('task_aug')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_aug=F('task_aug')+1)
 		
 	if(month == "SEPT"):
-		No_task.objects.filter(taskid=memb).update(task_sept=F('task_sept')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_sept=F('task_sept')+1)
 		
 	if(month == "OCT"):
-		No_task.objects.filter(taskid=memb).update(task_oct=F('task_oct')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_oct=F('task_oct')+1)
 		
 	if(month == "NOV"):
-		No_task.objects.filter(taskid=memb).update(task_nov=F('task_nov')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_nov=F('task_nov')+1)
 		
 	if(month == "DEC"):
-		No_task.objects.filter(taskid=memb).update(task_dec=F('task_dec')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['member']).update(task_dec=F('task_dec')+1)
 		
 	return HttpResponseRedirect('/')
 	
-
-
+	
 def addMember(request):
 	new_mem= Profile(mem=request.POST['memname'],memberid=request.user)
 	new_mem.save()
@@ -178,8 +164,42 @@ def addLeader(request):
 
 def delete(request,item_id):
 	item_d= ListItem.objects.get(id=item_id)
-	memobj = GraphMem.objects.get(memid__id=request.user.id,name=item_d.member)
-	memobj.delete()
+	month = item_d.month
+	if(month == "JAN"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_jan=F('task_jan')-1)
+		
+	if(month == "FEB"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_feb=F('task_feb')-1)
+		
+	if(month == "MAR"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_mar=F('task_mar')-1)
+		
+	if(month == "APR"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_apr=F('task_apr')-1)
+		
+	if(month == "MAY"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_may=F('task_may')-1)
+		
+	if(month == "JUNE"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_june=F('task_june')-1)
+		
+	if(month == "JULY"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_july=F('task_july')-1)
+		
+	if(month == "AUG"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_aug=F('task_aug')-1)
+		
+	if(month == "SEPT"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_sept=F('task_sept')-1)
+		
+	if(month == "OCT"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_oct=F('task_oct')-1)
+		
+	if(month == "NOV"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_nov=F('task_nov')-1)
+		
+	if(month == "DEC"):
+		Profile.objects.filter(memberid__id=request.user.id,mem=item_d.member).update(task_dec=F('task_dec')-1)
 	item_d.delete()
 	return HttpResponseRedirect('/')
 
@@ -188,29 +208,29 @@ def complete(request,item_id):
 	item.status="Completed :)"
 	item.save()
 	if(item.month == "JAN"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_jan=F('task_jan')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_jan=F('ctask_jan')+1)
 	if(item.month == "FEB"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_feb=F('task_feb')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_feb=F('ctask_feb')+1)
 	if(item.month == "MAR"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_mar=F('task_mar')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_mar=F('ctask_mar')+1)
 	if(item.month == "APR"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_apr=F('task_apr')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_apr=F('ctask_apr')+1)
 	if(item.month == "MAY"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_may=F('task_may')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_may=F('ctask_may')+1)
 	if(item.month == "JUNE"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_june=F('task_june')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_june=F('ctask_june')+1)
 	if(item.month == "JULY"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_july=F('task_july')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_july=F('ctask_july')+1)
 	if(item.month == "AUG"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_aug=F('task_aug')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_aug=F('ctask_aug')+1)
 	if(item.month == "SEPT"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_sept=F('task_sept')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_sept=F('ctask_sept')+1)
 	if(item.month == "OCT"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_oct=F('task_oct')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_oct=F('ctask_oct')+1)
 	if(item.month == "NOV"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_nov=F('task_nov')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_nov=F('ctask_nov')+1)
 	if(item.month == "DEC"):
-		GraphMem.objects.filter(memid__id=request.user.id,name=item.member).update(task_dec=F('task_dec')+1)
+		Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(ctask_dec=F('ctask_dec')+1)
 
 	return HttpResponseRedirect('/')
 
@@ -304,4 +324,33 @@ def signasleader(request):
 		return response
 	else:
 		messages.info(request,"Wrong pin!")
+		return HttpResponseRedirect('/')
+
+def signasmember(request):
+	membersignin=False
+	memberpin=request.POST.get('memberpin')
+	member= Profile.objects.get(memberid__id=request.user.id,mem_username=request.POST['name'])
+	if(memberpin == member.memberpin):
+		membersignin=True
+		items_list=ListItem.objects.filter(member=member.mem,status="Incomplete")
+		notes = Notes.objects.all()
+		announces = Announcements.objects.all()
+		notifs = ListItem.objects.filter(member=member.mem)
+		context={'memsignedin':membersignin,'member':member,'item_list':items_list,'notes':notes,'announces':announces,'notifs':notifs}
+
+		return render(request,'BucketList/member.html',context)
+	else:
+		messages.info(request,"Wrong pin!")
+		return HttpResponseRedirect('/')
+
+def signup(request):
+	members = Profile.objects.get(memberid__id=request.user.id,mem=request.POST['memname'])
+	if( members ):
+		members.mem_username = request.POST.get('memusername')
+		members.memberpin=request.POST.get('mempassword')
+		members.save()
+		messages.info(request,"You can sign in now!")
+		return HttpResponseRedirect('/')
+	else:
+		messages.info(request,"No such member exists in the group")
 		return HttpResponseRedirect('/')

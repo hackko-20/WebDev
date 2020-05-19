@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylehome.css">
+ <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</head>
+
+<section><nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">BucketList</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>&nbsp;&nbsp;
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>&nbsp;&nbsp;
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'BucketList:Calendar' %}">Calendar</a>
+      </li>&nbsp;&nbsp;
+       <li class="nav-item">
+        <button type="button" class="nav-link bg-dark" style="padding: none;border: none" onclick="document.getElementById('ADDNOTE')" data-toggle="modal" data-target="#examplemodall">
+  Add Notes
+</button></li>
+<div class="modal fade" id="examplemodall" tabindex="-1" role="dialog" aria-labelledby="exampleModallLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        </center><h5 class="modal-title" id="exampleModallLabel">ADD NOTE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <center><form name="note" action="/addNotes/" onsubmit="return ValidateFormNotesForm()" method="post">{% csrf_token %}
+        <h6 style="font-size: 15px">Anything you want to share to your team:</h6><br><input type="text" name="notes"><br><br>
+        </div>
+      <div class="modal-footer">
+        <input class="btn btn-primary" type="submit" value="ADD NOTE" >
+        </form></center>
+        </div>
+    </div>
+  </div>
+</div>&nbsp;&nbsp;
+<li class="nav-item">
+        <a class="nav-link " href="{% url 'logout' %}">Logout</a>
+      </li>&nbsp;&nbsp;
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Notifications
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul class="list-group">
+            <div class="dropdown-divider"></div><center><b>Notifications</b></center>
+            <div class="dropdown-divider"></div>
+            {% for item in notifs %}
+            <li class="dropdown-item"> <b>Task</b>:  {{ item.content }} <br>  <b>Member</b>:   {{ item.member }}
+                {% if item.status == "Completed :)" %}<span class="badge badge-success" style="text-align: left">Completed</span>{% else %}<span class="badge badge-danger" style="text-align: left">Incomplete</span>{% endif %}
+              &nbsp; &nbsp;
+            </li><div class="dropdown-divider"></div>
+            {% endfor %}
+            <br><div class="dropdown-divider"></div><center><b>Announcements</b></center>
+            <div class="dropdown-divider"></div>
+            {% if announces %}
+            {% for announce in announces %} 
+              <li class="dropdown-item">{{ announce.content }}<div class="text-muted">{{ announce.date_created }}</div></li><br><div class="dropdown-divider"></div>
+            {% endfor %}
+            {% else %}
+            <li class="dropdown-item text-muted">No new announcements from the leader.</li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+       </ul>
+  </div>
+</nav>
+</section>
+
+
+<body style=" background:black; box-sizing: border-box ;background-attachment: fixed; background-repeat: no-repeat; background-size: cover;" style="background-position: center;">
+	<div style="margin-left: 10rem; margin-right: 10rem; margin-top: 7rem;">
+<div class="dropdown" style="float: left" >
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    NOTES
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% if notes %}
+    {% for note in notes %}
+    <a class="dropdown-item" href="#memsignin" >{{ note.content }}</a>
+    {% endfor %}
+    {% else %}
+    <a class="dropdown-item" href="#">No notes :(</a>
+    {% endif %}
+  </div>
+</div><br>
+
+<div >
+	<br><br>
+<ul class="list-group">
+	{% if item_list %}
+	{% for item in item_list %}
+  <li class="list-group-item list-group-item-action list-group-item-secondary" >
+  <h5 class="card-title">Task:</h5>
+  <h6 class="card-text">{{ item.content }}</h6>
+  <br>
+  <div style="float: left"><h5>Assigned to:</h5>{{ item.member }}&nbsp;&nbsp;</div>
+  <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <div style="float: left"><h5>Deadline:</h5> {{ item.deadline }} <form action="/delete/{{ item.id }}/" method="post" style="display:inline">
+      {% csrf_token %} &nbsp;&nbsp;
+    <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
+    </form></div><br>
+    <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div style="float: left"><form action="/complete/{{ item.id }}/" method="post" style="display:inline">{% csrf_token %}<input class="btn btn-success btn-secondary btn-sm" type="submit" value="COMPLETED TASK">
+  </form></div></li>
+  {% endfor %}
+  {% else %}
+  <div><br><br><p class="display-3" style="margin-top: 10px; color: DimGrey;font-weight: 500">No Task Pending! WOHOO!</p><br><br></div>
+  {% endif %}
+</ul></div>
+
+
+
+</div>
+</body>
+</html>
