@@ -5,7 +5,6 @@ from .forms import Userform
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
 import operator
 from django.contrib import messages
 from rest_framework.views import APIView
