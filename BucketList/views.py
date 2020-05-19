@@ -5,6 +5,7 @@ from .forms import Userform
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 import operator
 from django.contrib import messages
 from rest_framework.views import APIView
@@ -305,3 +306,12 @@ def signasleader(request):
 	else:
 		messages.info(request,"Wrong pin!")
 		return HttpResponseRedirect('/')
+
+def upload(request):
+	context = {}
+	if request == 'POST':
+		uploaded_file = request.FILES['document']
+		fs = FileSystemStorage()
+		name = fs.save(uploaded_file.name, uploaded_file)
+		context['url'] = fs.url(name)
+	return render(request, 'BucketList/upload.html', context)
