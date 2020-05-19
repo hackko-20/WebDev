@@ -106,7 +106,7 @@
 
 <!--navigation bar start-->
 <section><nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="/">BucketList</a>
+  <a class="navbar-brand" href="/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTYgRdfb2BhAMSsG2nBxNbg_TiLZpY7nI87LpA8XwSdXrzTZIQ9&usqp=CAU" style="height: 3rem; width: 3rem; border-radius: 1rem;">BucketList</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>&nbsp;&nbsp;
@@ -122,11 +122,11 @@
       </li>&nbsp;&nbsp;
       <li class="nav-item">
         <button type="button" class="nav-link bg-dark" style="padding: none;border: none" onclick="document.getElementById('ADDMEM')" data-toggle="modal" data-target="#examplemodal">
-  Add Members
-</button></li>
-<div class="modal fade" id="examplemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-dialog-centered" role="document" >
-    <div class="modal-content">
+      Add Members
+      </button></li>
+      <div class="modal fade" id="examplemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+      <div class="modal-content">
       <div class="modal-header">
         </center><h5 class="modal-title" id="exampleModalLabel">ADD MEMBER</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -141,10 +141,9 @@
         <input class="btn btn-primary" type="submit" value="ADD MEMBER" >
         </form></center>
         </div>
-    </div>
-  </div>
-</div>&nbsp;&nbsp;
-
+      </div>
+      </div>
+      </div>&nbsp;&nbsp;
       <li class="nav-item">
         <button type="button" class="nav-link bg-dark" style="padding: none;border: none" onclick="document.getElementById('ADDNOTE')" data-toggle="modal" data-target="#examplemodall">
   Add Notes
@@ -192,7 +191,9 @@
         </div>
     </div>
   </div>
-</div>&nbsp;&nbsp;{% endif %}
+</div>&nbsp;&nbsp;
+
+{% endif %}
       <li class="nav-item">
         <a class="nav-link " href="{% url 'logout' %}">Logout</a>
       </li>&nbsp;&nbsp;{% if not leadsignedin %}
@@ -234,6 +235,44 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Notes
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if notes %}
+          {% for note in notes %}
+          <a class="dropdown-item" href="#memsignin" >{{ note.content }}</a>
+          {% endfor %}
+          {% else %}
+          <a class="dropdown-item" href="#">No notes :(</a>
+          {% endif %}
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Members
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if all_members %}
+          {% for member in all_members %}
+          <a class="dropdown-item" href="#">{{ member.mem }}</a>
+          {% endfor %}
+          {% else %}
+          <a class="dropdown-item" href="#">No members :(</a>
+          {% endif %}
+        </div>
+      </li>{% if not leadsignedin %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort Tasks By
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{% url 'sortbymem' %}">Team Members</a>
+          <a class="dropdown-item" href="{% url 'sortbydead' %}">Deadline</a>
+          <a class="dropdown-item" href="{% url 'unsort' %}">Remove Sort</a>
+        </div>
+      </li>{% endif %}
 
 {% endif %}
     </ul>
@@ -246,15 +285,17 @@
 {% if not user.is_authenticated %}
 <div class="container">
 <div style="float: left">
-<p class="display-4" style="margin-top: 140px; color: DimGrey;font-weight: 500">&nbsp;&nbsp;&nbsp;&nbsp;BUILD WITH </p><p class="display-1" style="font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    font-weight: 500;color: white;"><b>BucketList</b></p></div>
+<!--<p class="display-4" style="margin-top: 140px; color: DimGrey;font-weight: 500">&nbsp;&nbsp;&nbsp;&nbsp;BUILD WITH </p>--><p class="display-1" style="font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    font-weight: 500;color: white;margin-top: 90px"><b>BucketList<br>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTYgRdfb2BhAMSsG2nBxNbg_TiLZpY7nI87LpA8XwSdXrzTZIQ9&usqp=CAU" style="height: 25rem; width: 25rem; border-radius: 5rem;">
+    </b></p></div>
     <div style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-  <div style="float: left;margin-top: 75px"><div class="card" style="width: 30rem;">
+  <div style="float: left;margin-top: 110px"><div class="card" style="width: 30rem;">
   <!--<img src="..." class="card-img-top" alt="...">-->
   <div class="card-body">
     <p>
     <p class="card-text" style="font-weight: 700; font-size: 32;color: Teal;text-align: center">Want to build together? You have come to right place!</p><br>
-    <p style="font-weight: 500;color:black;font-size: 20;text-align: justify">Plan your work, assign it to team members, be upto date with deadlines, and personalise your work space with your team. Sign up to get started!<br><br><p style="text-align: center;color: Teal;font-weight: 500"><a style="color: Teal" href="{% url 'BucketList:user_login' %}">
+    <p style="font-weight: 500;color:black;font-size: 20;text-align: justify">Plan your work, assign it to team members, be upto date with deadlines, and personalise your work space with your team. Our motto is unity in strength.Team work makes Brain work .Sign up to get started!<br><br><p style="text-align: center;color: Teal;font-weight: 500"><a style="color: Teal" href="{% url 'BucketList:user_login' %}">
     Already a member? Login!</a></p>
     </p>
   </div>
@@ -267,11 +308,11 @@
 {% endif %}<!--Main webpage without login ends-->
 
 
-<body style=" background:black; box-sizing: border-box ;background-attachment: fixed; background-repeat: no-repeat; background-size: cover;" style="background-position: center;">
+<body style=" background: black; box-sizing: border-box ;background-attachment: fixed; background-repeat: no-repeat; background-size: cover;" style="background-position: center;">
 <div style="margin-left: 10rem; margin-right: 10rem; margin-top: 7rem;">
 {% if user.is_authenticated %}
 
-<!--sort dropdown-->
+<!--sort dropdown
 {% if not leadsignedin %}
 <div class="dropdown" style="float: left">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -283,13 +324,13 @@
     <a class="dropdown-item" href="{% url 'unsort' %}">Remove Sort</a>
   </div>
 </div>
-<!--sort dropdown ends-->
+sort dropdown ends-->
 
 <div style="float: left">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>{% endif %}
 
-<!--members dropdown-->
+<!--members dropdown
 <div class="dropdown" style="float: left" >
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     MEMBERS
@@ -304,12 +345,12 @@
     {% endif %}
   </div>
 </div>
-<!--members dropdown ends-->
+members dropdown ends-->
 <div style="float: left">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 
-<!--notes dropdown-->
+<!--notes dropdown
 <div class="dropdown" style="float: left" >
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     NOTES
@@ -324,7 +365,7 @@
     {% endif %}
   </div>
 </div>
-<!--notes dropdown ends-->
+notes dropdown ends-->
 
 <div style="float: left">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -334,11 +375,12 @@
 <br>
 <!--LISTING STARTS-->
   <ul class="list-group">
-  
+  <div class="row" style="justify-content: center;">
   {% if all %}
   {% for item in all %}
-  <li class="list-group-item list-group-item-action list-group-item-secondary" >
-  <h5 class="card-title">Task:</h5>
+  <li class="list-group-item list-group-item-action list-group-item-secondary" style=" padding: 2rem 5rem; max-width: 55rem; border-radius: 0.5rem ">
+  <br>
+    <h5 class="card-title">Task:</h5>
   <h6 class="card-text">{{ item.content }}</h6>
   <br>
   <div style="float: left"><h5>Assigned to:</h5>{{ item.member }}&nbsp;&nbsp;</div>
@@ -357,22 +399,25 @@
   <div style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
   <div style="float: left"><form action="/complete/{{ item.id }}/" method="post">{% csrf_token %}<input class="btn btn-success btn-secondary btn-sm" type="submit" value="COMPLETED TASK">
   </form></div>{% endif %}
-  </li><br>
+  </li><br><br>
   {% endfor %}
   {% else %}
   <br><br><p class="display-3" style="margin-top: 10px; color: DimGrey;font-weight: 500">No Task Pending! WOHOO!</p><br><br>
-  {% endif %}
+  {% endif %}<br><br>
+  </div>
   </ul>
   <!--LISTING ENDS-->
-
 <br>
 <br>
+<br>
+<br>
+<div class="row" style="justify-content: center;">
 {% if leadsignedin %}
 <div>
-    <div style="float: left; margin-bottom: 2rem;" >
-      <div class="card" style="width: 15rem; height:32rem;" style="float: left">
-  <div class="card-body">
-    <h5 class="card-title">Add Work</h5>
+  <div style="float: left; margin-bottom: 2rem;" >
+   <div class="card" style="width: 15rem; height:32rem; border-radius: 2rem; border-width: 5px; border-color: rgb(190, 182, 142);" style="float: left">
+    <div class="card-body">
+      <h5 class="card-title">Add Work</h5>
         <p class="card-text">Add work to your project, assign it to a member!</p>
         <form name="addItem" action="/add/" onsubmit="return ValidateForm()" method="post">{% csrf_token %}
           <h6>TASK TO BE ADDED:</h6> <input  type="text" name="content" ><br><br>
@@ -393,16 +438,16 @@
           <h6>MEMBER:</h6> <input type="text" name="member" ><br><br>
           <input class="btn btn-primary" type="submit" value="ADD">
         </form>
-  </div>
-</div>
-</div>
+     </div>
+   </div>
+ </div>
 </div>
 <br><br>
 {% endif %}
 {% if not leadsignedin and not teamleader %}
 <div>
     <div style="float: left; margin-bottom: 2rem; " >
-      <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
+      <div class="card" style="width: 15rem; height: 28rem; border-radius: 2rem; border-width: 5px; border-color: rgb(190, 182, 142);" style="float: left">
     <div class="card-body">
       <h5 class="card-title">Add Team Leader</h5>
         <p class="card-text">Note that team leader cannot be changed in the future.</p>
@@ -418,10 +463,8 @@
 <br>
 {% endif %}
 {% if not leadsignedin and teamleader %}
-
-<div style="float: left; margin-bottom: 2rem;">
-<div class="card" style="width: 15rem; height: 28rem;" style="float: left">
-  <div class="card">
+    <div style="float: left; margin-bottom: 2rem;">
+      <div class="card" style="width: 15rem; height: 28rem; border-radius: 2rem; border-width: 5px; border-color: rgb(190, 182, 142);" style="float: left">
     <div class="card-body">
       <h5 class="card-title">Sign in as Leader!</h5>
         <form id="signasleader" name="signleader" action="/signasleader/" onsubmit="return ValidateSignIn()" method="post">{% csrf_token %}
@@ -431,9 +474,8 @@
     </div>
   </div>
 </div>
-</div>
 <div style="float: left;margin-left: 1rem; margin-bottom: 2rem;">
-  <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
+  <div class="card" style="width: 15rem; height: 28rem; border-radius: 2rem; border-width: 5px; border-color: rgb(190, 182, 142);" style="float: left">
 <div class="card-body">
   <h5 class="card-title">Create your personal page!</h5>
     <form id="membersignup" name="memsignup" action="/membersignup/" onsubmit="return ValidateSignIn()" method="post">{% csrf_token %}
@@ -445,19 +487,21 @@
 </div>
 </div>
 <div style="float: left;margin-left: 1rem; margin-bottom: 2rem;">
-  <div class="card" style="width: 15rem; height: 28rem;" style="float: left">
+  <div class="card" style="width: 15rem; height: 28rem; border-radius: 2rem; border-width: 5px; border-color: rgb(190, 182, 142);" style="float: left">
 <div class="card-body">
   <h5 class="card-title">Go to my page!</h5><br>
     <form id="memberlogin" name="memlogin" action="/memberlogin/" onsubmit="return ValidateSignIn()" method="post">{% csrf_token %}
-    <h6>NAME:</h6><input type="email" name="name"><br><br>
+    <h6>USERNAME:</h6><input type="text" name="name"><br><br>
     <h6>PASSWORD:</h6><input type="password" name="memberpin"><br><br>
     <input class="btn btn-primary" type="submit" value="SIGN IN" >
-    </form> </div>
+    <center>
+  </center>  
+  </form> </div>
 </div>
 </div>
-
 {% endif %}
 {% endif %}
+</div>
 </div>
 </body>
 <div class="container-fluid" style="margin-top: 70rem;margin-bottom:0rem;background-color: #263238;align-items: flex-end;">
