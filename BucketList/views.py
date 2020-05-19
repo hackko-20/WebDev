@@ -144,8 +144,6 @@ def add(request):
 def addMember(request):
 	new_mem= Profile(mem=request.POST['memname'],memberid=request.user)
 	new_mem.save()
-	new_graphmem = GraphMem(memid=request.user,name=request.POST['memname'])
-	new_graphmem.save()
 	return HttpResponseRedirect('/')
 
 def addLeader(request):
@@ -240,8 +238,60 @@ def change(request,item_id):
 	new_mem=request.POST['memchange']
 	for member in members:
 		if(new_mem == member.mem):
+			item = ListItem.objects.get(id=item_id)
+			name = item.member
+			month = item.month
+			if(item.month == "JAN"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_jan=F('task_jan')-1)
+			if(item.month == "FEB"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_feb=F('task_feb')-1)
+			if(item.month == "MAR"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_mar=F('task_mar')-1)
+			if(item.month == "APR"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_apr=F('task_apr')-1)
+			if(item.month == "MAY"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_may=F('task_may')-1)
+			if(item.month == "JUNE"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_june=F('task_june')-1)
+			if(item.month == "JULY"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_july=F('task_july')-1)
+			if(item.month == "AUG"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_aug=F('task_aug')-1)
+			if(item.month == "SEPT"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_sept=F('task_sept')-1)
+			if(item.month == "OCT"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_oct=F('task_oct')-1)
+			if(item.month == "NOV"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_nov=F('task_nov')-1)
+			if(item.month == "DEC"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=item.member).update(task_dec=F('task_dec')-1)
+			if(item.month == "JAN"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_jan=F('task_jan')+1)
+			if(item.month == "FEB"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_feb=F('task_feb')+1)
+			if(item.month == "MAR"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_mar=F('task_mar')+1)
+			if(item.month == "APR"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_apr=F('task_apr')+1)
+			if(item.month == "MAY"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_may=F('task_may')+1)
+			if(item.month == "JUNE"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_june=F('task_june')+1)
+			if(item.month == "JULY"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_july=F('task_july')+1)
+			if(item.month == "AUG"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_aug=F('task_aug')+1)
+			if(item.month == "SEPT"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_sept=F('task_sept')+1)
+			if(item.month == "OCT"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_oct=F('task_oct')+1)
+			if(item.month == "NOV"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_nov=F('task_nov')+1)
+			if(item.month == "DEC"):
+				Profile.objects.filter(memberid__id=request.user.id,mem=request.POST['memchange']).update(task_dec=F('task_dec')+1)	
 			item_d= ListItem.objects.filter(id=item_id).update(member=request.POST['memchange'])
 			flag=1;
+
 	if(flag==0):
 		messages.info(request,"Member is not a part of the team!")
 	return HttpResponseRedirect('/')
@@ -354,3 +404,6 @@ def signup(request):
 	else:
 		messages.info(request,"No such member exists in the group")
 		return HttpResponseRedirect('/')
+
+
+

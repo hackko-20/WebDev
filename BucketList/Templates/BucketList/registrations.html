@@ -1,28 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link href='https://fonts.googleapis.com/css?family=Architects Daughter' rel='stylesheet'>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
-<body>
+<body style="background-color: black">
 <div class="container">
     <div class="jumbotron">
       {% if registered %}
-        <h1>Thank you for registering!</h1>
-        <br>
+        <h1 class="display-4">Thank you for registering!</h1>
+        <br><br>
         <h4>Go to <a href="{% url 'BucketList:user_login' %}" class="btn btn-secondary btn-sm">LOGIN</a> page</h4>
       {% else %}
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
+        <h1 class="display-4">Register Here...</h1><br>
+        <h3>Just fill out the form.</h3><br>
           <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
-          {{ user_form.as_p }}
-          <input type="submit" name="" value="Register">
+          {{ user_form.as_p }}<br>
+          <input class="btn btn-success"type="submit" name="" value="Register">
         </form>
       {% endif %}
     </div>
   </div>
 </body>
+<div class="container-fluid" style="margin-top: 70rem;margin-bottom:0rem;background-color: #263238;align-items: flex-end;">
+
+<!-- Footer -->
+<footer class="page-footer font-small teal pt-4">
+
+  <!-- Footer Text -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row" style="display: flex;">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold" style="color: white">ABOUT US</h5>
+        <p style="color: white;font-family: 'Delius Swash Caps'">This site is made in the effort to provide a platform<br>for people to work together.<br><p class="text-muted">For any help, contact us!</p></p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mb-md-0 mb-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold" style="color: white">Developers:</h5>
+        <p style="color: white;">SHREYA YADAV:&nbsp;&nbsp;&nbsp;&nbsp;shreyayadav987@gmail.com<br>MEGHA GUPTA:&nbsp;&nbsp;&nbsp;&nbsp;megha4595@gmail.com<br>STUTI JAIN:&nbsp;&nbsp;&nbsp;&nbsp;stutijain898@gmail.com
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Text -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3" style="background-color:#004d40;color: white">© 2020 Copyright:
+    <a href="http://127.0.0.1:8000/" style="color: white"> BucketList.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer --></div>
 </html>
