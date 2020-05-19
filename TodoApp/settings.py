@@ -24,9 +24,9 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 SECRET_KEY = '8ir8zw66%(i5^s0#$up-!1i$vevd2)p-##3wb34o9eygjhs0#%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -126,5 +126,3 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'BucketList/static')]
 
 LOGIN_URL = '/BucketList/user_login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL ='/media/'

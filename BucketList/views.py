@@ -307,11 +307,3 @@ def signasleader(request):
 		messages.info(request,"Wrong pin!")
 		return HttpResponseRedirect('/')
 
-def upload(request):
-	context = {}
-	if request == 'POST':
-		uploaded_file = request.FILES['document']
-		fs = FileSystemStorage()
-		name = fs.save(uploaded_file.name, uploaded_file)
-		context['url'] = fs.url(name)
-	return render(request, 'BucketList/upload.html', context)

@@ -36,7 +36,6 @@ urlpatterns = [
     path('unsort/',unsort,name="unsort"),
     path('addNotes/',addNotes),
     path('addAnnounce/',addAnnounce),
-    url(r'^upload/', views.upload, name='upload'),
     url(r'^$',views.home,name='home'),
     url(r'^special/',views.special,name='special'),
     url(r'^BucketList/',include('BucketList.urls')),
