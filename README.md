@@ -33,3 +33,25 @@ FEATURES:
 ->A personalised page for each member to add notes, upload work files and keep records of their own assignments.
 
 ->Leader has the power of assigning, deleting, modifying task and team goals,as well as has access to progress of each member.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+TECH STACK:
+
+Framework:Django framework, Django Rest Framework.
+
+Libraries:Charts.js, Bootstrap, Jquery.
+
+Languages:Backend->Python, Frontend->HTML,CSS,Javascript.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+FUTURE PLANS:
+
+->Predict the future scope of a member, based on the present status of his progress(ML): On the basic of the present progress graph of the member, predict the progress two months into the future.
+
+->Chat option for communication between two members of the group.
+
+->Uploading files, documents related to the project by the members, which can be seen and accessed by the member(owner of those documents) only. 
+
