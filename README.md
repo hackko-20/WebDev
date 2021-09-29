@@ -1,4 +1,4 @@
-# WebDev
+# BucketList
 PROBLEM:
 
 People working together often are separated by geographical bounds. Times like the present also hinder in the process of collective working. A world where everything is being done online, group projects can definitely benefit if the work flow is planned online and its status is updated for all the team members at a common platform. So there is a need of a platform where a team can plan, keep tabs on their work and update the all their tasks along with deadlines and reminders. 
